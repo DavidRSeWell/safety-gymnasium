@@ -26,22 +26,21 @@ class MultiGoalLevel3(BaseTask):
 
         self.placements_conf.extents = [-1, -1, 1, 1]
 
+        """
         self._add_geoms(
             GoalRed(keepout=0.305),
             GoalBlue(keepout=0.305),
         )
-
+        """
         self.last_dist_goal_red = None
         self.last_dist_goal_blue = None
 
     def dist_opp_red(self) -> float:
         """Return the distance from p1 agent to the goal XY position."""
-        assert hasattr(self, 'goal_red'), 'Please make sure you have added goal into env.'
         return self.agent.dist_xy(0, self.agent.pos_1)  # pylint: disable=no-member
 
     def dist_opp_blue(self) -> float:
         """Return the distance from the agent to the goal XY position."""
-        assert hasattr(self, 'goal_blue'), 'Please make sure you have added goal into env.'
         return self.agent.dist_xy(1, self.agent.pos_0)  # pylint: disable=no-member
 
     def calculate_reward(self):
@@ -90,3 +89,8 @@ class MultiGoalLevel3(BaseTask):
             self.dist_opp_red() <= self.goal_red.size,
             self.dist_opp_blue() <= self.goal_blue.size,
         )
+    
+    def build_goal_position(self) -> None:
+        """Build a new goal position, maybe with resampling due to hazards."""
+        # Resample until goal is compatible with layout
+        return None
